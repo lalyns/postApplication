@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.blog.blog.Dto.PasswordRequestDto;
 import com.blog.blog.Dto.PostRequestDto;
 
 @Service
@@ -69,8 +70,8 @@ public class PostService {
     }
 
     @Transactional
-    public Boolean deletePost(Long id, String password) {
-        if (!matchesPassword(id, password))
+    public Boolean deletePost(Long id, PasswordRequestDto password) {
+        if (!matchesPassword(id, password.getPassword()))
             return false;
 
         postRepository.deleteById(id);

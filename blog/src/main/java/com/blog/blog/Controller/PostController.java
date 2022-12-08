@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blog.blog.Dto.PasswordRequestDto;
 import com.blog.blog.Dto.PostRequestDto;
 import com.blog.blog.Entity.Post;
 import com.blog.blog.Service.PostService;
@@ -48,8 +49,8 @@ public class PostController {
         return postService.update(id, requestDto);
     }
 
-    @DeleteMapping("/api/posts/{id}/{password}")
-    public Boolean deletePost(@PathVariable Long id, @PathVariable String password) {
-        return postService.deletePost(id, password);
+    @DeleteMapping("/api/posts/{id}")
+    public Boolean deletePost(@PathVariable Long id, @RequestBody PasswordRequestDto requestDto) {
+        return postService.deletePost(id, requestDto);
     }
 }
