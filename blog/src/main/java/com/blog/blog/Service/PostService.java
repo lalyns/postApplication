@@ -15,7 +15,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,8 +55,29 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<Post> getPosts() {
-        return postRepository.findAllByOrderByCreateAtDesc();
+    public List<Post> getPosts(HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        Claims claims;
+        
+        if (token != null) {
+            if  (jwtUtil.validateToken(token)){
+                claims = jwtUtil.getUserInfoFromToken(token);
+            } else {
+                throw new IllegalArgumentException("token error!!");
+            }
+
+            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow
+            (
+                () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
+            );
+            
+            List<Post> posts = postRepository.findByUsernameOrderByCreateAtDesc(user.getUsername());
+            
+            return posts;
+
+        } else {
+            return null;
+        }
     }
 
     @Transactional(readOnly = true)

@@ -28,8 +28,8 @@ public class PostController {
 
     @GetMapping("/index")
     @ResponseBody
-    public List<Post> getPosts() {
-        return postService.getPosts();
+    public List<Post> getPosts(HttpServletRequest request) {
+        return postService.getPosts(request);
     }
 
     @GetMapping("/index/{id}")

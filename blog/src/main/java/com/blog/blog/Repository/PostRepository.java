@@ -8,4 +8,6 @@ import com.blog.blog.entity.Post;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByOrderByCreateAtDesc();
+
+    List<Post> findByUsernameOrderByCreateAtDesc(String username);
 }

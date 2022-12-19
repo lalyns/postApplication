@@ -71,13 +71,4 @@ public class UserService {
     public boolean validationPassword(User user, String password){
         return passwordEncoder.matches(password, user.getPassword());
     }
-
-    @Transactional(readOnly = true)
-    public User getUser(Long id)
-    {
-        return userRepository.findById(id)
-                .orElseThrow(
-                    () -> new IllegalArgumentException("존재하지 않는 ID 입니다.")
-                );
-    }
 }
