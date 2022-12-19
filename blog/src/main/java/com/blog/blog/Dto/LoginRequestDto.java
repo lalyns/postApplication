@@ -1,11 +1,11 @@
 package com.blog.blog.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-public class PostRequestDto {
-    private String subject;
+@NoArgsConstructor
+public class LoginRequestDto {
     private String username;
-    private String contents;
     private String password;
 }

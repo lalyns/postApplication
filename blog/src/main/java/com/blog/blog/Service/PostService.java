@@ -1,7 +1,9 @@
-package com.blog.blog.Service;
+package com.blog.blog.service;
 
-import com.blog.blog.Entity.Post;
-import com.blog.blog.Repository.PostRepository;
+import com.blog.blog.dto.PasswordRequestDto;
+import com.blog.blog.dto.PostRequestDto;
+import com.blog.blog.entity.Post;
+import com.blog.blog.repository.PostRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -11,9 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.blog.blog.Dto.PasswordRequestDto;
-import com.blog.blog.Dto.PostRequestDto;
 
 @Service
 @RequiredArgsConstructor

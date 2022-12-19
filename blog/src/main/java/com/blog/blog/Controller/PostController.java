@@ -1,20 +1,13 @@
-package com.blog.blog.Controller;
+package com.blog.blog.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.blog.blog.Dto.PasswordRequestDto;
-import com.blog.blog.Dto.PostRequestDto;
-import com.blog.blog.Entity.Post;
-import com.blog.blog.Service.PostService;
+import com.blog.blog.dto.PasswordRequestDto;
+import com.blog.blog.dto.PostRequestDto;
+import com.blog.blog.entity.Post;
+import com.blog.blog.service.PostService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -50,7 +43,8 @@ public class PostController {
     }
 
     @DeleteMapping("/api/posts/{id}")
-    public Boolean deletePost(@PathVariable Long id, @RequestBody PasswordRequestDto requestDto) {
+    public Boolean deletePost(  @PathVariable Long id,
+                                @RequestBody PasswordRequestDto requestDto) {
         return postService.deletePost(id, requestDto);
     }
 }

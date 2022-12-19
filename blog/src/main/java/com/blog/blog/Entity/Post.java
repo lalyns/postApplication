@@ -1,7 +1,6 @@
-package com.blog.blog.Entity;
+package com.blog.blog.entity;
 
-import com.blog.blog.Dto.PostRequestDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.blog.blog.dto.PostRequestDto;
 
 import javax.persistence.*;
 
@@ -24,7 +23,7 @@ public class Post extends Timestamped{
     private String username;
 
     @Column(nullable = false)
-    @JsonIgnore
+    //@JsonIgnore
     private String password;
 
     @Column(nullable = false)

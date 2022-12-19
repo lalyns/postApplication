@@ -1,4 +1,4 @@
-package com.blog.blog.Entity;
+package com.blog.blog.entity;
 
 import java.time.LocalDateTime;
 

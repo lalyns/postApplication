@@ -8,11 +8,13 @@
 <br><br>
 
 ## 프로젝트 기간
- - 2022년 12월 5일 ~ 2022년 12월 9일
+ - 블로그 기능: 2022년 12월 5일 ~ 2022년 12월 9일
+ - 로그인 방문 기능: 2022년 12월 12일 ~ 2022년 12월 16일
 
 <br><br>
 
 ## API 명세서
+### 블로그 기능 API
 |기능| METHOD | URL | Request | Response |
 |---|---|:---|:---|:---|
 |글 작성하기| `Post` | /api/posts | {<br>"subject": "subject",<br>"username": "username",<br> "contents": "contents",<br> "password": "password"<br>} |  {<br>"createAt": "createAt",<br>"id": "id",<br>"subject": "subject",<br>"username": "username",<br>"contents": "contents"<br>}|
@@ -22,6 +24,15 @@
 |글 삭제하기| `Delete` | /api/posts/{id} | {"password":"password"} | {"success": true or false} |
 
 <br><br>
+
+### 회원가입&로그인 기능 API
+|기능| METHOD | URL | Request | Response |
+|:---:|---|:---|:---|:---|
+|회원가입| `Post` | /api/users/signup | {<br>"username": String,<br> "password": String,<br> "email": String<br> } | redirect:/api/user/login |
+|글 조회하기| `Get` | /api/posts/{id} | None |{<br>"createAt": "createAt",<br>"id": "id",<br>"subject": "subject",<br>"username": "username",<br>"contents": "contents"<br>} |
+|글 수정하기| `Put` | /api/posts/{id} | {<br>"subject": "subject",<br>"username": "username",<br> "contents":"contents",<br> "password": "password"<br>} | {<br>"createAt": "createAt",<br>"id": "id",<br>"subject": "subject",<br>"username": "username",<br>"contents": "contents"<br>} |
+|글 삭제하기| `Delete` | /api/posts/{id} | {"password":"password"} | {"success": true or false} |
+
 
 ## 프로젝트 회고
 1. 프로젝트 경험<br>
