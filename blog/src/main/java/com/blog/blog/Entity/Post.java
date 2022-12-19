@@ -23,21 +23,12 @@ public class Post extends Timestamped{
     private String username;
 
     @Column(nullable = false)
-    //@JsonIgnore
-    private String password;
-
-    @Column(nullable = false)
     private String contents;
 
-    public Post(PostRequestDto requestDto) {
+    public Post(PostRequestDto requestDto, String username) {
         this.subject = requestDto.getSubject();
-        this.username = requestDto.getUsername();
+        this.username = username;
         this.contents = requestDto.getContents();
-        this.password = requestDto.getPassword();
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public void update(PostRequestDto requestDto) {

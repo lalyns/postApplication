@@ -2,6 +2,8 @@ package com.blog.blog.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.*;
 
 import com.blog.blog.dto.PasswordRequestDto;
@@ -13,28 +15,30 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/posts")
 public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/api/posts")
-    public Post createPost(@RequestBody PostRequestDto requestDto) {
-        return postService.createPost(requestDto);
+    @PostMapping("/posting")
+    public Post createPost(@RequestBody PostRequestDto requestDto,
+                            HttpServletRequest request) {
+        return postService.createPost(requestDto, request);
     }
 
-    @GetMapping("/api/posts")
+    @GetMapping("/index")
     @ResponseBody
     public List<Post> getPosts() {
         return postService.getPosts();
     }
 
-    @GetMapping("/api/posts/{id}")
+    @GetMapping("/index/{id}")
     @ResponseBody
     public Post getPost(@PathVariable Long id) {
         return postService.getPost(id);
     }
 
-    @PutMapping("/api/posts/{id}")
+    @PutMapping("/index/{id}")
     @ResponseBody
     public Post updatePost(
         @PathVariable Long id,
@@ -42,7 +46,7 @@ public class PostController {
         return postService.update(id, requestDto);
     }
 
-    @DeleteMapping("/api/posts/{id}")
+    @DeleteMapping("/index/{id}")
     public Boolean deletePost(  @PathVariable Long id,
                                 @RequestBody PasswordRequestDto requestDto) {
         return postService.deletePost(id, requestDto);

@@ -3,13 +3,18 @@ package com.blog.blog.service;
 import com.blog.blog.dto.PasswordRequestDto;
 import com.blog.blog.dto.PostRequestDto;
 import com.blog.blog.entity.Post;
+import com.blog.blog.entity.User;
+import com.blog.blog.jwt.JwtUtil;
 import com.blog.blog.repository.PostRepository;
+import com.blog.blog.repository.UserRepository;
 
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,31 +23,36 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PostService {
 
-    @Autowired
     public final PostRepository postRepository;
-
-    @Autowired
-    public final PasswordEncoder passwordEncoder;
-
-    @Transactional
-    public Post createPost(PostRequestDto requestDto) {
-        Post post = new Post(requestDto);
-        String encodePwd = encodePassword(post.getPassword());
-        post.setPassword(encodePwd);
-        postRepository.save(post);
-        return post;
-    }
+    public final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
     @Transactional
-    public String encodePassword(String password) {
-        String encode = passwordEncoder.encode(password);
-        return encode;
-    }
+    public Post createPost(PostRequestDto requestDto,
+                            HttpServletRequest request) {
+        
+        String token = jwtUtil.resolveToken(request);
+        Claims claims;
+        
+        if (token != null) {
+            if  (jwtUtil.validateToken(token)){
+                claims = jwtUtil.getUserInfoFromToken(token);
+            } else {
+                throw new IllegalArgumentException("token error!!");
+            }
 
-    @Transactional
-    public Boolean matchesPassword(Long id, String password) {
-        Post post = getPost(id);
-        return passwordEncoder.matches(password, post.getPassword());
+            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow
+            (
+                () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
+            );
+            
+            Post post = postRepository.saveAndFlush(new Post(requestDto, user.getUsername()));
+            
+            return post;
+        } else {
+            return null;
+        }
+
     }
 
     @Transactional(readOnly = true)
@@ -61,8 +71,6 @@ public class PostService {
     @Transactional
     public Post update(Long id, PostRequestDto requestDto) {
         Post post = getPost(id);
-        if (!matchesPassword(id, requestDto.getPassword()))
-            return null;
 
         post.update(requestDto);
         return post;
@@ -70,8 +78,6 @@ public class PostService {
 
     @Transactional
     public Boolean deletePost(Long id, PasswordRequestDto password) {
-        if (!matchesPassword(id, password.getPassword()))
-            return false;
 
         postRepository.deleteById(id);
         return true;
