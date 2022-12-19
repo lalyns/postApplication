@@ -81,26 +81,63 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Post getPost(Long id) {
-        return postRepository.findById(id)
-        .orElseThrow(
-            () -> new IllegalArgumentException("존재하지 않는 글 입니다.")
-        );
+    public Post getPost(Long id, HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        Claims claims;
+        
+        if (token != null) {
+            if  (jwtUtil.validateToken(token)){
+                claims = jwtUtil.getUserInfoFromToken(token);
+            } else {
+                throw new IllegalArgumentException("token error!!");
+            }
+
+            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow
+            (
+                () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
+            );
+                
+            return postRepository.findById(id)
+            .orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 글 입니다.")
+            );
+
+        } else {
+            return null;
+        }
     }
 
     @Transactional
-    public Post update(Long id, PostRequestDto requestDto) {
-        Post post = getPost(id);
+    public Post update(Long id, PostRequestDto requestDto, HttpServletRequest request) {
+        Post post = getPost(id, request);
 
         post.update(requestDto);
         return post;
     }
 
     @Transactional
-    public Boolean deletePost(Long id, PasswordRequestDto password) {
+    public Boolean deletePost(Long id, HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        Claims claims;
+        
+        if (token != null) {
+            if  (jwtUtil.validateToken(token)){
+                claims = jwtUtil.getUserInfoFromToken(token);
+            } else {
+                throw new IllegalArgumentException("token error!!");
+            }
 
-        postRepository.deleteById(id);
-        return true;
+            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow
+            (
+                () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
+            );
+            
+            postRepository.deleteById(id);
+            return true;
+
+        } else {
+            return null;
+        }
     }
 
 

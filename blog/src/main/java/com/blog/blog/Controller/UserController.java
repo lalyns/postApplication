@@ -26,7 +26,7 @@ public class UserController {
     @ResponseBody
     public String signup(@RequestBody SignupRequestDto request) {
         userService.signup(request);
-        return "success";
+        return "sign up success";
     }
 
     @GetMapping("/login")
@@ -34,6 +34,6 @@ public class UserController {
     public String login(@RequestBody LoginRequestDto request, 
                                      HttpServletResponse response) {
         userService.login(request, response);
-        return "success";
+        return "login success";
     }
 }
