@@ -1,5 +1,8 @@
 package com.lalyns.board.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
 import com.lalyns.board.dto.request.PostRequestDto;
@@ -24,6 +27,10 @@ public class Post extends TimeStamped{
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "post")
+    @OrderBy("modifiedAt desc")
+    private final List<Comment> comments = new ArrayList<>();
 
     public Post(String title, String contents, User user) {
         this.title = title;
