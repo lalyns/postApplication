@@ -15,7 +15,6 @@ import com.lalyns.board.dto.request.PostRequestDto;
 import com.lalyns.board.dto.response.PostResponseDto;
 import com.lalyns.board.service.PostService;
 
-import lombok.Delegate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
